@@ -15,34 +15,44 @@ function LunchCheckController($scope){
   $scope.countList = function (){
     var comma = ",";
     var limit = 3;
+    var defaultMessage = "Please enter data first";
 
-    if($scope.lunchList.length == 0){
-      $scope.displayColor = "red";
-      $scope.displayMessage = "Please enter data first";
-    }else {
-      $scope.displayColor = "green";
-      $scope.displayMessage = checkStringLength($scope.lunchList, comma, limit);
-    }
+     $scope.displayMessage = checkListLength($scope.lunchList, comma, limit);
+
+     if($scope.displayMessage == defaultMessage){
+       $scope.displayColor="red";
+     }else{
+       $scope.displayColor="green";
+     }
   };
 
-  function checkStringLength(stringToSplit, separator, limit){
+  function checkListLength(stringToSplit, separator, limit){
     var count = 0;
+
+    count = splitString(stringToSplit, separator);
+
+    if(count == 0 ){
+      return "Please enter data first";
+    }else if (count <= limit) {
+      return "Enjoy!";
+    }else{
+      return "Too Much!";
+    }
+  }
+
+  function splitString(stringToSplit, separator){
+    var count=0;
     var item = "";
-    //count = stringToSplit.split(separator).length;
+
     var arrayOfString = stringToSplit.split(separator);
 
-    for( var i=0; i < stringToSplit.split(separator).length; i++){
+    for( var i=0; i < arrayOfString.length; i++){
       item = arrayOfString[i].trim();
       if(item.length != 0 ){
         count++;
       }
     }
-
-    if(count <= limit){
-      return "Enjoy!";
-    }else {
-      return "Too Much!";
-    }
+    return count;
   }
 };
 
