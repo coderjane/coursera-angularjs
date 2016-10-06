@@ -1,7 +1,7 @@
 (function (){
 'use strict';
 
-angular.module('ShoppingListApp', [])
+angular.module ('ShoppingListApp', [])
 .controller ('ToBuyController', ToBuyController)
 .controller ('AlreadyBoughtController', AlreadyBoughtController)
 .service ('ShoppingListCheckOffService', ShoppingListCheckOffService);
@@ -38,43 +38,33 @@ function AlreadyBoughtController(ShoppingListCheckOffService){
   var service = this;
 
   var buyItems =
-    [{name: "Cereal", quantity: 1} ,
-     {name: "Breads", quantity: 2} ,
+    [{name: "Cereal", quantity: 1},
+     {name: "Bananas", quantity: 6},
      {name: 'Juices', quantity: 3 },
-     {name: 'Eggs', quantity: 2} ,
-     {name: 'Milk', quantity: 1} ]  ;
+     {name: 'Eggs', quantity: 2},
+     {name: 'Milk', quantity: 1}];
   var boughtItems = [];
 
-  service.addItemToBuy = function(itemName, itemQuantity){
-    var buyItem = service.addItemToList(itemName, itemQuantity);
-    buyItems.push(buyItem);
-    console.log("ServiceBuyList", buyItems);
+  service.getItemsToBuy = function(){
+    return buyItems;
   }
 
-  service.addItemToList = function(itemName, itemQuantity){
+  service.addItem= function(itemName, itemQuantity){
     var item = {
       name : itemName,
       quantity : itemQuantity
     };
-    console.log("Item Added", item);
     return item;
-    //buyItems.push(item);
+  }
+
+  service.addItemToBuy = function(itemName, itemQuantity){
+    var buyItem = service.addItem(itemName, itemQuantity);
+    buyItems.push(buyItem);
   }
 
   service.buyItem = function(itemIndex){
-    boughtItems.push(service.addItemToList(buyItems[itemIndex].name, buyItems[itemIndex].quantity));
+    boughtItems.push(service.addItem(buyItems[itemIndex].name, buyItems[itemIndex].quantity));
     service.removeItem(itemIndex);
-    console.log("NewServiceBoughtList", boughtItems);
-    console.log("NewServiceBuyList", buyItems);
-  }
-
-  service.removeItem = function (itemIndex){
-    buyItems.splice(itemIndex, 1);
-  }
-
-  service.getItemsToBuy = function(){
-    console.log("GetBuyList", buyItems);
-    return buyItems;
   }
 
   service.getItemsBought = function(){
@@ -82,6 +72,9 @@ function AlreadyBoughtController(ShoppingListCheckOffService){
     return boughtItems;
   }
 
+  service.removeItem = function (itemIndex){
+    buyItems.splice(itemIndex, 1);
+  }
 
  }
 
